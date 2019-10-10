@@ -3,14 +3,24 @@ defmodule Teppelin.TwitchTV do
   @base_url Application.get_env(:teppelin, :twitch_base_url)
   @client_id Application.get_env(:tepplin, :twitch_client_id)
 
-  def get_live_streams(pid, search_term) do
-    game = String.capitalize(search_term)
-    full_url = "#{@base_url}/streams?stream_type=live&game=#{game}"
+  def get_live_streams(pid) do
+    full_url = "#{@base_url}/streams?stream_type=live"
     headers = ["Client-ID": @client_id,
                "User-Agent": "Teppelin app"]
    {:ok, streams} = get(full_url, headers, :eager)
-   send(pid, {:live_streams,
-             streams |> filter_streams(game)})
+   send(pid, {:live_streams, streams})
+  end
+
+   def filter_streams(streams, search_term) do
+     game = String.capitalize(search_term)
+     regex = ~r{#{game}}i
+     streams
+     |> Enum.filter( fn item ->
+        cond  do
+          Regex.run(regex, item[:game]) == nil -> false
+          true -> true 
+        end
+      end)
   end
 
 
@@ -71,15 +81,6 @@ defmodule Teppelin.TwitchTV do
     |> Map.get(:streams)
   end
 
-  defp filter_streams(streams, game) do
-     regex = ~r{#{game}}i
-     streams
-     |> Enum.filter( fn item ->
-        cond  do
-          Regex.run(regex, item[:game]) == nil -> false
-          true -> true 
-        end
-      end)
-  end
+ 
 
 end
