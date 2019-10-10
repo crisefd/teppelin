@@ -5,10 +5,6 @@
 # is restricted to this project.
 use Mix.Config
 
-# General application configuration
-config :teppelin,
-  ecto_repos: [Teppelin.Repo]
-
 # Configures the endpoint
 config :teppelin, TeppelinWeb.Endpoint,
   url: [host: "localhost"],
