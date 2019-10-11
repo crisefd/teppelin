@@ -2,27 +2,23 @@ defmodule TeppelinWeb.TwitchStreamsLive do
   use Phoenix.LiveView
 
   def render(assigns) do
-    #TeppelinWeb.LiveStreamsView.render("index.html", assigns)
-    ~L"""
+   ~L"""
     <div id="cover">
-  <form method="get" action="" phx-submit="search">
-    <div class="tb">
-      <div class="td">
-        <input type="text" placeholder="Search" name="query" required></div>
-      <div class="td" id="s-cover">
-        <button type="submit" >
-          <div id="s-circle"></div>
-          <span></span>
-        </button>
-      </div>
+      <form method="get" action="" phx-submit="search">
+        <div class="tb">
+          <div class="td">
+            <input type="text" placeholder="Search" name="query" required></div>
+          <div class="td" id="s-cover">
+            <button type="submit" >
+              <div id="s-circle"></div>
+              <span></span>
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
-  </form>
-</div>
-
-<div> 
-  Searching for: <%= @search_term %>
-</div>
-    """
+  """
+  # TeppelinWeb.LiveStreamsView.render("index.html", assigns)
   end
 
   def mount(_session, socket) do

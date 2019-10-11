@@ -18,9 +18,9 @@ defmodule TeppelinWeb.Router do
   scope "/", TeppelinWeb do
     pipe_through :browser
 
-    # live "/", TwitchStreamsLive
+    live "/", TwitchStreamsLive
 
-    get "/", PageController, :index
+    # get "/", PageController, :index
   end
 
 

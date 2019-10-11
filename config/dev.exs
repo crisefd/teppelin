@@ -37,7 +37,8 @@ config :teppelin, TeppelinWeb.Endpoint,
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
       ~r{lib/teppelin_web/views/.*(ex)$},
-      ~r{lib/teppelin_web/templates/.*(eex)$}
+      ~r{lib/teppelin_web/templates/.*(eex)$},
+      ~r{lib/teppelin_web/live/.*(ex)$}
     ]
   ]
 

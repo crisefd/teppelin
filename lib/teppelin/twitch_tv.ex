@@ -12,9 +12,10 @@ defmodule Teppelin.TwitchTV do
     full_url = "#{@base_url}/streams?stream_type=live"
     headers = ["Client-ID": @client_id,
                "User-Agent": "Teppelin app"]
-    IO.puts "get_live_streams"
     #GenServer.cast(__MODULE__, {full_url, headers, search_term, pid})
+    IO.puts "base_url: #{@base_url} | client_id: #{@client_id}"
     {:ok, streams} = get(full_url, headers, :eager)
+    IO.puts "get_live_streams: #{inspect streams}"
     send(pid, {:live_streams, streams |> filter_streams(search_term)})
   end
 

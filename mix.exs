@@ -5,7 +5,7 @@ defmodule Teppelin.Mixfile do
     [
       app: :teppelin,
       version: "0.0.1",
-      elixir: "~> 1.4",
+      elixir: "~> 1.9.1",
       elixirc_paths: elixirc_paths(Mix.env),
       compilers: [:phoenix, :gettext] ++ Mix.compilers,
       start_permanent: Mix.env == :prod,
@@ -34,16 +34,16 @@ defmodule Teppelin.Mixfile do
   defp deps do
     [
       {:phoenix, "~> 1.4.9"},
-      {:phoenix_pubsub, "~> 1.0"},
+      {:phoenix_pubsub, "~> 1.1"},
       {:phoenix_html, "~> 2.10"},
       {:phoenix_live_reload, "~> 1.2",  only: :dev},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       # {:cowboy, "~> 2.0"},
-      {:plug_cowboy, "~> 2.1"},
-      {:phoenix_live_view, "~> 0.3.1"},
+      {:plug_cowboy, "~> 2.0"},
+      {:phoenix_live_view, "~> 0.3"},
       {:poison, "~> 4.0"},
-      {:httpoison, "~> 1.5.0"},
+      {:httpoison, "~> 1.5"},
     ]
   end
 
