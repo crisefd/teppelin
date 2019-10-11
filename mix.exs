@@ -20,8 +20,7 @@ defmodule Teppelin.Mixfile do
     [
       mod: {Teppelin.Application, []},
       extra_applications: [:logger, 
-                           :runtime_tools,
-                           :httpoison, :poison]
+                           :runtime_tools]
     ]
   end
 
@@ -39,7 +38,9 @@ defmodule Teppelin.Mixfile do
       {:phoenix_html, "~> 2.10"},
       {:phoenix_live_reload, "~> 1.2",  only: :dev},
       {:gettext, "~> 0.11"},
-      {:cowboy, "~> 1.0"},
+      {:jason, "~> 1.0"},
+      # {:cowboy, "~> 2.0"},
+      {:plug_cowboy, "~> 2.1"},
       {:phoenix_live_view, "~> 0.3.1"},
       {:poison, "~> 4.0"},
       {:httpoison, "~> 1.5.0"},

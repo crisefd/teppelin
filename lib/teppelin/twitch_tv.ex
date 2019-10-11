@@ -1,15 +1,24 @@
 defmodule Teppelin.TwitchTV do
+  # use GenServer, restart: :transient
 
   @base_url Application.get_env(:teppelin, :twitch_base_url)
   @client_id Application.get_env(:tepplin, :twitch_client_id)
 
-  def get_live_streams(pid) do
+  #def start_link(_) do
+ #   GenServer.start_link(__MODULE__, :no_args)
+ # end
+
+   def get_live_streams(pid, search_term) do
     full_url = "#{@base_url}/streams?stream_type=live"
     headers = ["Client-ID": @client_id,
                "User-Agent": "Teppelin app"]
-   {:ok, streams} = get(full_url, headers, :eager)
-   send(pid, {:live_streams, streams})
+    IO.puts "get_live_streams"
+    #GenServer.cast(__MODULE__, {full_url, headers, search_term, pid})
+    {:ok, streams} = get(full_url, headers, :eager)
+    send(pid, {:live_streams, streams |> filter_streams(search_term)})
   end
+
+  def filter_streams(streams, nil), do: streams
 
    def filter_streams(streams, search_term) do
      game = String.capitalize(search_term)
@@ -21,6 +30,26 @@ defmodule Teppelin.TwitchTV do
           true -> true 
         end
       end)
+  end
+
+ # def init(:no_args) do
+   # {:ok, nil}
+  #end
+
+ # def handle_call({full_url, headers, search_term , pid}, from, _state) do
+  #  {:ok, streams} = get(full_url, headers, :eager)
+  #  send(pid,
+  #      {:live_streams, streams |> filter_streams(search_term)})
+ #   {:noreply, streams}
+ # end
+
+  def handle_cast({full_url, headers, search_term , pid}, _state) do
+    IO.puts "handle_cast"
+     {:ok, streams} = get(full_url, headers, :eager)
+      send(pid,
+        {:live_streams, streams |> filter_streams(search_term)})
+      IO.inspect streams
+      {:noreply, streams}
   end
 
 

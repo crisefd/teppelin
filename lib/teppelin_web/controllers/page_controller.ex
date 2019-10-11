@@ -3,5 +3,6 @@ defmodule TeppelinWeb.PageController do
 
   def index(conn, _params) do
     render conn, "index.html"
+     Phoenix.LiveView.Controller.live_render(conn, TeppelinWeb.TwitchStreamsLive, session: %{})
   end
 end

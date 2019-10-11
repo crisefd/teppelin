@@ -9,6 +9,7 @@ use Mix.Config
 config :teppelin, TeppelinWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "a3GsLCrrxP4AcOxCENkq93NXZhzsMM7fb867YdMdKb1bKJuR7rF12R/FsyQx2/8X",
+  live_view: [signing_salt: "8E1OPYds"],
   render_errors: [view: TeppelinWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Teppelin.PubSub,
            adapter: Phoenix.PubSub.PG2]
@@ -24,6 +25,9 @@ config :teppelin,
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:user_id]
+
+# Use Jason for JSON parsing in Phoenix
+config :phoenix, :json_library, Jason
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

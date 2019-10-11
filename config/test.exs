@@ -8,12 +8,3 @@ config :teppelin, TeppelinWeb.Endpoint,
 
 # Print only warnings and errors during test
 config :logger, level: :warn
-
-# Configure your database
-config :teppelin, Teppelin.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
-  database: "teppelin_test",
-  hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox
