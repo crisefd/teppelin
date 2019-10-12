@@ -19,6 +19,7 @@ config :teppelin, TeppelinWeb.Endpoint,
 config :teppelin,
         twitch_base_url: "https://api.twitch.tv/kraken",
         twitch_client_id: "3arfvc5f6s5s8j1k07rlvoo3a1q3h7",
+        api_version: "application/vnd.twitchtv.v5+json",
         twitch_secret_key: "rcd83bls8hdxbvudm05rpldwtkent9"
 
 # Configures Elixir's Logger

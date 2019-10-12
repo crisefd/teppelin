@@ -1,27 +1,26 @@
 defmodule Teppelin.TwitchTV do
-  # use GenServer, restart: :transient
 
+  @me TwitchTV
   @base_url Application.get_env(:teppelin, :twitch_base_url)
-  @client_id Application.get_env(:tepplin, :twitch_client_id)
-
-  #def start_link(_) do
- #   GenServer.start_link(__MODULE__, :no_args)
- # end
+  @client_id Application.get_env(:teppelin, :twitch_client_id)
+  @api_version Application.get_env(:teppelin, :api_version)
+  @timeout 15_000
 
    def get_live_streams(pid, search_term) do
     full_url = "#{@base_url}/streams?stream_type=live"
     headers = ["Client-ID": @client_id,
+               "Accept": @api_version,
                "User-Agent": "Teppelin app"]
-    #GenServer.cast(__MODULE__, {full_url, headers, search_term, pid})
-    IO.puts "base_url: #{@base_url} | client_id: #{@client_id}"
     {:ok, streams} = get(full_url, headers, :eager)
-    IO.puts "get_live_streams: #{inspect streams}"
-    send(pid, {:live_streams, streams |> filter_streams(search_term)})
+    streams = streams |> filter_streams(search_term)
+    IO.puts "#results lenght: {length(streams)}"
+    IO.puts "PID: #{inspect pid}"
+    send(pid, {:live_streams, streams})
   end
 
   def filter_streams(streams, nil), do: streams
 
-   def filter_streams(streams, search_term) do
+  def filter_streams(streams, search_term) do
      game = String.capitalize(search_term)
      regex = ~r{#{game}}i
      streams
@@ -33,65 +32,13 @@ defmodule Teppelin.TwitchTV do
       end)
   end
 
- # def init(:no_args) do
-   # {:ok, nil}
-  #end
-
- # def handle_call({full_url, headers, search_term , pid}, from, _state) do
-  #  {:ok, streams} = get(full_url, headers, :eager)
-  #  send(pid,
-  #      {:live_streams, streams |> filter_streams(search_term)})
- #   {:noreply, streams}
- # end
-
-  def handle_cast({full_url, headers, search_term , pid}, _state) do
-    IO.puts "handle_cast"
-     {:ok, streams} = get(full_url, headers, :eager)
-      send(pid,
-        {:live_streams, streams |> filter_streams(search_term)})
-      IO.inspect streams
-      {:noreply, streams}
-  end
-
-
-  # defp get(url, headers, to_pid, :lazy) do
-  #   Stream.resource(
-  #     fn ->  # start_fun
-  #       HTTPoison.get!(url, headers, %{},
-  #                      [stream_to: self(), async: :once])
-  #     end,
-  #     fn %HTTPoison.AsyncResponse{id: id} = resp -> # next_fun
-  #       receive do
-  #         %HTTPoison.AsyncStatus{id: ^id, code: code} ->
-  #           HTTPoison.stream_next(resp)
-  #           {[], resp}
-
-  #         %HTTPoison.AsyncHeaders{id: ^id, headers: headers} ->
-  #           HTTPoison.stream_next(resp)
-  #           {[], resp}
-
-  #         %HTTPoison.AsyncChunk{id: ^id, chunk: chunk} ->
-  #           HTTPoison.stream_next(resp)
-  #           {[chunk], resp}
-
-  #         %HTTPoison.AsyncEnd{id: ^id} ->
-  #           {:halt, resp}
-  #        after
-  #           5_000 -> raise "receive timeout"
-  #       end
-  #     end,
-  #     fn resp -> # end_fun
-  #       :hackney.stop_async(resp.id) 
-  #     end
-  #     )
-  # end
 
   defp get(url, headers, :eager) do
     HTTPoison.get(url, headers)
     |> handle_response(:eager)
   end
 
-  defp handle_response({:ok,
+  defp handle_response({_,
                         %{status_code: status_code, body: body}},
                         :eager) do
     streams = 
