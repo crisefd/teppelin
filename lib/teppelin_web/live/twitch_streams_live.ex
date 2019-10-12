@@ -6,27 +6,7 @@ defmodule TeppelinWeb.TwitchStreamsLive do
   @api_version Application.get_env(:teppelin, :api_version)
 
   def render(assigns) do
-   ~L"""
-    <div id="cover">
-      <form method="get">
-        <div class="tb">
-          <div class="td">
-            <input type="text" placeholder="Search" name="query" required></div>
-          <div class="td" id="s-cover">
-            <button phx-click="search" >
-              <div id="s-circle"></div>
-              <span></span>
-            </button>
-          </div>
-        </div>
-      </form>
-    </div>
-
-    <div>
-    Streams: <%= @streams_count %>
-     </div>
-  """
-  # TeppelinWeb.LiveStreamsView.render("index.html", assigns)
+    TeppelinWeb.LiveStreamsView.render("index.html", assigns)
   end
 
   def mount(_session, socket) do
