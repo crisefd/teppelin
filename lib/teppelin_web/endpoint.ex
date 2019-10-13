@@ -2,7 +2,8 @@ defmodule TeppelinWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :teppelin
 
   socket "/socket", TeppelinWeb.UserSocket,
-    websocket: true,
+   # websocket: true,
+    websocket: [timeout: 45_000],
     longpoll: false
 
   socket "/live", Phoenix.LiveView.Socket
