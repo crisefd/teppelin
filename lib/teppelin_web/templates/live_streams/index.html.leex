@@ -1,0 +1,31 @@
+<div id="cover" class="search-bar">
+   <form method="get">
+        <div class="tb">
+          <div class="td">
+            <input type="text" placeholder="Search" name="query" value= "<%= @search_term %>" required></div>
+          <div class="td" id="s-cover">
+            <button phx-click="search" >
+              <div id="s-circle"></div>
+              <span></span>
+            </button>
+          </div>
+       </div>
+  </form>
+</div>
+
+<br>
+
+
+  <div class="elements-container elements">
+    <%= for stream <- @streams do %>
+        <div class="card notice <%= get_card_type(stream[:viewers]) %> animated flipInX">
+            <h5 class="card-title" style="margin-bottom: 0px;"><strong><%= stream[:game] %></strong></h5>
+            <h6 class="card-subtitle mb-2 text-muted"> Channel:  <%= stream[:channel][:name] %></h6>
+            <img src="<%= stream[:channel][:logo]  %>" alt="Channel logo">
+            <p class="card-text"> Viewers: <%= stream[:viewers] %></p>
+            <a href="<%=  stream[:channel][:url] %>" class="card-link" target="_blank">stream now</a>
+        </div>
+    <% end %>
+</div>
+
+

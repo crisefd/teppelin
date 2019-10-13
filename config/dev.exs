@@ -11,8 +11,15 @@ config :teppelin, TeppelinWeb.Endpoint,
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
-  watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin",
-                    cd: Path.expand("../assets", __DIR__)]]
+  watchers: [
+    node: [
+      "node_modules/webpack/bin/webpack.js",
+      "--mode",
+      "development",
+      "--watch-stdin",
+      cd: Path.expand("../assets", __DIR__)
+    ]
+  ]
 
 # ## SSL Support
 #
@@ -37,7 +44,9 @@ config :teppelin, TeppelinWeb.Endpoint,
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
       ~r{lib/teppelin_web/views/.*(ex)$},
-      ~r{lib/teppelin_web/templates/.*(eex)$}
+      ~r{lib/teppelin_web/templates/.*(eex)$},
+      ~r{lib/teppelin_web/live/.*(ex)$},
+       ~r{lib/teppelin/.*(ex)$}
     ]
   ]
 
@@ -47,12 +56,3 @@ config :logger, :console, format: "[$level] $message\n"
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
-
-# Configure your database
-config :teppelin, Teppelin.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
-  database: "teppelin_dev",
-  hostname: "localhost",
-  pool_size: 10

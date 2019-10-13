@@ -40,6 +40,7 @@ defmodule TeppelinWeb do
       import TeppelinWeb.Router.Helpers
       import TeppelinWeb.ErrorHelpers
       import TeppelinWeb.Gettext
+      import Phoenix.LiveView, only: [live_render: 2, live_render: 3]
     end
   end
 
@@ -47,6 +48,7 @@ defmodule TeppelinWeb do
     quote do
       use Phoenix.Router
       import Plug.Conn
+      import Phoenix.LiveView.Router
       import Phoenix.Controller
     end
   end
