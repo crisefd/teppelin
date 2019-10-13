@@ -1,16 +1,20 @@
 <div id="cover" class="search-bar">
-   <form method="get">
+  
         <div class="tb">
           <div class="td">
-            <input type="text" placeholder="Search" name="query" value= "<%= @search_term %>" required></div>
+            <input type="text"
+                   placeholder="Search"
+                   name="query"
+                   phx-keyup="search"
+                   value= "<%= @search_term %>"></div>
           <div class="td" id="s-cover">
-            <button phx-click="search" >
+            <button  >
               <div id="s-circle"></div>
               <span></span>
             </button>
           </div>
        </div>
-  </form>
+
 </div>
 
 <br>

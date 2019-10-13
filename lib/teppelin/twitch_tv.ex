@@ -5,7 +5,7 @@ defmodule Teppelin.TwitchTV do
   @base_url Application.get_env(:teppelin, :twitch_base_url)
   @client_id Application.get_env(:teppelin, :twitch_client_id)
   @api_version Application.get_env(:teppelin, :api_version)
-  @timeout 6_000
+  @timeout 5_000
   @me TwitchTV
 
   def start_link([]) do
@@ -14,7 +14,7 @@ defmodule Teppelin.TwitchTV do
 
   def search_streams(search_term) do
     IO.puts "Teppelin.TwitchTV.search_streams #{search_term}"
-    GenServer.call(@me, {:search_streams, search_term})
+    GenServer.cast(@me, {:search_streams, search_term})
   end
 
   
@@ -53,11 +53,11 @@ defmodule Teppelin.TwitchTV do
   #    {:noreply, state, @timeout}
   # end
 
-  def handle_call({:search_streams, search_term}, _from, %{streams: streams}) do
+  def handle_cast({:search_streams, search_term}, %{streams: streams}) do
     filtered_streams =  streams |> filter_streams(search_term)
     IO.puts "Teppelin.TwitchTV.handle_cast search_term : #{search_term} size: #{length(filtered_streams)}"
     TeppelinWeb.Endpoint.broadcast_from(self(), "twitch", "live_streams", %{streams: filtered_streams}) 
-    {:reply, streams, %{ streams: streams, search_term: search_term }} 
+    {:noreply, %{ streams: streams, search_term: search_term }} 
   end
 
   def handle_call(_, _from, state) do

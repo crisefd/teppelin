@@ -6,6 +6,7 @@ defmodule TeppelinWeb.TwitchStreamsLive do
   end
 
   def mount(_session, socket) do
+    IO.puts "mount"
     if connected?(socket) do
       TeppelinWeb.Endpoint.subscribe("twitch")
     end
@@ -19,41 +20,49 @@ defmodule TeppelinWeb.TwitchStreamsLive do
            streams: streams, streams_count: length(streams))}
   end
 
-  def handle_info({:search_streams, search_term}, socket) do
-     IO.puts "TeppelinWeb.TwitchStreamsLive.handle_info 2"
+  # def handle_info({:search_streams, search_term}, socket) do
+  #    IO.puts "TeppelinWeb.TwitchStreamsLive.handle_info 2"
+  #   Teppelin.TwitchTV.search_streams(search_term)
+  #   {:noreply, assign(socket, search_term: search_term)}
+  # end
+
+  def handle_info(:search, socket = %{assigns: %{search_term: search_term}}) do
+    IO.puts "TeppelinWeb.TwitchStreamsLive.handle_info #{search_term}"
     Teppelin.TwitchTV.search_streams(search_term)
-    {:noreply, assign(socket, search_term: search_term)}
+    {:noreply, assign(socket, loading: false)}
   end
 
-  def handle_info(nil, socket) do
-    IO.puts "hello world"
+
+  def handle_event("search", %{"value" => search_term}, socket = %{ assigns: %{ loading: false }}) do
+    IO.puts "loaiding = false"
+    timer_ref = Process.send_after(self(), :search, 1000)
+    {:noreply, 
+      assign(socket, 
+             search_term: search_term,
+             timer_ref: timer_ref,
+             loading: true) }
+  end
+
+  def handle_event("search",  %{"value" => search_term}, %{assigns: %{loading: true}} = socket) do
+    IO.puts "loaiding = true"
+    {:noreply,
+     assign(socket, search_term: search_term )}
+  end
+
+  def handle_event("search", _params, socket) do
+    IO.puts "facepalm"
+    System.halt(0)
     {:noreply, socket}
   end
 
-  def handle_params(%{"query" => q} = _params, _uri, socket) do
-     send(self(), {:search_streams, q})
-     {:noreply, assign(socket,  search_term: q)}
-  end
-
-   def handle_params(_params, _uri, socket) do
-    {:noreply, socket}
-  end
- 
-  def handle_event("search", %{"query" => q}, socket) do
-    send(self(), {:search_streams, q})
-    {:noreply, assign(socket,  search_term: q)}
-  end
-
-  def handle_event("search", _, socket) do
-    IO.puts "Hola mundo"
-    {:noreply, socket}
-  end
 
   defp init_data(socket) do
     IO.puts "TeppelinWeb.TwitchStreamsLive.init_data: #{inspect socket.assigns}"
     assign(socket,
            search_term: nil, 
            streams: [],
+           loading: false,
+           timer_ref: nil,
            streams_count: 0)
   end
 
