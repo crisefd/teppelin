@@ -11,7 +11,7 @@ defmodule Teppelin.Application do
       # Start the endpoint when the application starts
       supervisor(TeppelinWeb.Endpoint, []),
       # Start your own worker by calling: Teppelin.Worker.start_link(arg1, arg2, arg3)
-      # worker(Teppelin.Worker, [arg1, arg2, arg3]),
+      {Teppelin.TwitchTV, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
