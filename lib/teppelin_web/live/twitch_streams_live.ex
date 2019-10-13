@@ -10,14 +10,15 @@ defmodule TeppelinWeb.TwitchStreamsLive do
   end
 
   def mount(_session, socket) do
-    {:ok, assign(socket, search_term: nil, streams: [], streams_count: 0)}
+     streams = get_live_streams(nil)
+     streams_count = length(streams)
+    {:ok, assign(socket, search_term: "", streams: streams, streams_count: streams_count)}
   end
 
 
   def handle_params(%{"query" => q} = _params, _uri, socket) do
      streams = get_live_streams(q)
      streams_count = length(streams)
-      IO.puts "results lenght: #{streams_count}"
      {:noreply, assign(socket,  search_term: q, streams: streams, streams_count: streams_count)}
   end
 
@@ -26,11 +27,14 @@ defmodule TeppelinWeb.TwitchStreamsLive do
   end
  
   def handle_event("search", %{"query" => q}, socket) do
-     IO.puts "query: #{q}"
      streams = get_live_streams(q)
      streams_count = length(streams)
-     IO.puts "results lenght: #{streams_count}"
     {:noreply, assign(socket,  search_term: q, streams: streams, streams_count: streams_count)}
+  end
+
+  def handle_event("search", params, socket) do
+    IO.inspect params
+    {:noreply, params}
   end
 
   def get_live_streams(search_term) do
