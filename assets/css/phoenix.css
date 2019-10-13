@@ -74,6 +74,7 @@ input[type="text"]
 input[type="text"]::placeholder
 {
     color: #fff;
+    font-size: 0.8em;
 }
 
 #s-cover
