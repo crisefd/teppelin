@@ -1,6 +1,6 @@
 # Teppelin
 
-**Search the top live streams on Twitch**
+**Filter out the top live streams on Twitch**
 
 Learn more about Twitch API [here](https://dev.twitch.tv/)
 
@@ -21,11 +21,12 @@ Run
 mix phx.server
 ```
 
-and visit [here](http://localhost:4000)
-The live version can be found [here]()
+And visit [here](http://localhost:4000).
+
+Or check the live version in [here](https://mighty-oasis-34248.herokuapp.com/)
 
 ### TODO
 
 - Improve the styling
-- Add a pagination selector (right now it uses 25 as default)
+- Add a pagination selector (right now it uses 100 as default)
 
