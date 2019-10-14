@@ -21,7 +21,8 @@ Run
 mix phx.server
 ```
 
-and [visit](http://localhost:4000)
+and visit [here](http://localhost:4000)
+The live version can be found [here]()
 
 ### TODO
 

@@ -24,14 +24,13 @@ defmodule Teppelin.TwitchTV do
   def handle_info(:timeout, %{search_term: search_term}) do
     streams = get_live_streams()
 
-    if search_term == nil do
+    if search_term == nil or search_term == "" do
       TeppelinWeb.Endpoint.broadcast_from(self(), "twitch", "live_streams", %{streams: streams})
     else
       TeppelinWeb.Endpoint.broadcast_from(self(), "twitch", "live_streams", %{
         streams: streams |> filter_streams(search_term)
       })
     end
-
     {:noreply, %{streams: streams, search_term: search_term}, @timeout}
   end
 
@@ -42,11 +41,11 @@ defmodule Teppelin.TwitchTV do
       streams: filtered_streams
     })
 
-    {:noreply, %{streams: streams, search_term: search_term}}
+    {:noreply, %{streams: streams, search_term: search_term}, @timeout}
   end
 
   defp get_live_streams() do
-    full_url = "#{@base_url}/streams?stream_type=live"
+    full_url = "#{@base_url}/streams?stream_type=live&limit=100"
     headers = ["Client-ID": @client_id, Accept: @api_version, "User-Agent": "Teppelin app"]
     {:ok, streams} = get(full_url, headers, :eager)
     streams
