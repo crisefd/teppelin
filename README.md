@@ -11,7 +11,7 @@ This is a demo app built using [phoenix_live_view](https://github.com/phoenixfra
 Just clone the repo and run
 
 ```shell
-mix deps.get && mix deps.compile %% cd assets && npm i
+mix deps.get && mix deps.compile && cd assets && npm i
 ```
 
 ## Usage
